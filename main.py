@@ -1,5 +1,6 @@
 import os
 import time
+import random
 from dotenv import load_dotenv
 from utils.price_checker import check_price
 
@@ -14,8 +15,10 @@ def main():
             check_price(URL, BUY_PRICE)
         except Exception as e:
             print(f"Error: {e}")
-        print("Esperando 1 hora para el próximo chequeo...")
-        time.sleep(3600)
+        #Generate a random sleep time betwen 
+        sleep_time = random.randint(3600, 10800)
+        print(f"Esperando {sleep_time // 3600} horas y {(sleep_time % 3600) // 60} minutos para el próximo chequeo...")
+        time.sleep(sleep_time)
 
 if __name__ == "__main__":
     main()
