@@ -1,13 +1,21 @@
-import requests
-from bs4 import BeautifulSoup
+import os
+import time
+from dotenv import load_dotenv
+from utils.price_checker import check_price
 
-URL = "https://www.amazon.com.mx/Acer-America-Corp-Gaming-Monitor/dp/B0C1T35BCF/ref=pd_rhf_dp_s_ci_mcx_mr_hp_d_d_sccl_1_9/131-5489028-8592543?psc=1"
-response = requests.get(url=URL)
+load_dotenv()
 
-soup = BeautifulSoup(response.text, "html.parser")
+URL = os.environ["URL"]
+BUY_PRICE = 6000
 
-price = soup.find(class_="a-offscreen").get_text()
+def main():
+    while True:
+        try:
+            check_price(URL, BUY_PRICE)
+        except Exception as e:
+            print(f"Error: {e}")
+        print("Esperando 1 hora para el próximo chequeo...")
+        time.sleep(3600)
 
-price_without_currency = price.split("$")[1]
-
-print(price_without_currency)
+if __name__ == "__main__":
+    main()
